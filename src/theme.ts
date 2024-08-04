@@ -1,10 +1,11 @@
 import { extendTheme } from 'native-base'
 const config = {
-  useSystemColotMode: false,
+  useSystemColorMode: false,
   initialColorMode: 'light'
 }
 
 const colors = {
+  primary: {
   50: '#EEF2F6',
   100: '#CFD9E7',
   200: '#B1C1D8',
@@ -15,6 +16,7 @@ const colors = {
   700: '#334866',
   800: '#223044',
   900: '#111822'
+  }   
 }
 
 export default extendTheme({ config, colors })
