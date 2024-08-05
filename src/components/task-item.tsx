@@ -30,7 +30,7 @@ const TaskItem = (props: Props) => {
   )
   const activeTextColor = themeTools.getColor(
     theme,
-    useColorModeValue('datkText', 'lightText')
+    useColorModeValue('darkText', 'lightText')
   )
 
   const doneTextColor = themeTools.getColor(

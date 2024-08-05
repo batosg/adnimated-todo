@@ -39,7 +39,8 @@ const AnimatedTaskLabel = memo((props: Props) => {
   const textColorProgress = useSharedValue(0)
   const textColorAnimatedStyles = useAnimatedStyle(
     () => ({
-      color: interpolateColor(
+      width: strikethrough ? '100%' : '0%',
+      borderBottomColor: interpolateColor(
         textColorProgress.value,
         [0, 1],
         [textColor, inactiveTextColor]
