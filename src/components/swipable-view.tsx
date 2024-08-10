@@ -62,7 +62,7 @@ const SwipeView = (props: Props) => {
         simultaneousHandlers={simultaneousHandlers}
         onGestureEvent={panGesture}
       >
-        <StyledView style={facadeStyle}></StyledView>
+        <StyledView style={facadeStyle}>{children}</StyledView>
       </PanGestureHandler>
     </StyledView>
   )

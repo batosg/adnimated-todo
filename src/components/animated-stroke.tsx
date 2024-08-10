@@ -1,9 +1,13 @@
 import React, { useRef, useState } from 'react'
-import Animated, { Easing, useAnimatedProps } from 'react-native-reanimated'
+import Animated, {
+  SharedValue,
+  Easing,
+  useAnimatedProps
+} from 'react-native-reanimated'
 import { Path, PathProps } from 'react-native-svg'
 
 interface AnimatedStrokeProps extends PathProps {
-  progress: Animated.SharedValue<number>
+  progress: SharedValue<number>
 }
 
 const AnimatedPath = Animated.createAnimatedComponent(Path)

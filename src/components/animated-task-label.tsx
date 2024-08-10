@@ -13,8 +13,8 @@ import Animated, {
   interpolateColor
 } from 'react-native-reanimated'
 interface Props {
-  strikethrough: boolean
   textColor: string
+  strikethrough: boolean
   inactiveTextColor: string
   onPress?: () => void
   children?: React.ReactNode
