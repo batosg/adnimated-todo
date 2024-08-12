@@ -1,24 +1,85 @@
 import * as React from 'react'
-import {
-  Text,
-  Box,
-  Center,
-  VStack,
-  themeTools,
-  useTheme,
-  useColorModeValue,
-  useColorMode
-} from 'native-base'
+import { useState, useCallback } from 'react'
+import { Box, Center, VStack } from 'native-base'
 import ThemeToggle from '../components/theme-toggle'
-import AnimatedCheckbox from '../components/animated-checkbox'
-import App from '.'
-import SwipeView from '../components/swipable-view'
+import { AntDesign } from '@expo/vector-icons'
 import { Pressable } from 'react-native'
 import TaskItem from '../components/task-item'
+import shortid from 'shortid'
+import TaskList from '../components/task-list'
 
+const initialData = [
+  {
+    id: shortid.generate(),
+    subject: 'Learn React Native',
+    done: false
+  },
+  {
+    id: shortid.generate(),
+    subject: 'Learn React Navigation',
+    done: false
+  },
+  {
+    id: shortid.generate(),
+    subject: 'Learn Redux',
+    done: false
+  }
+]
 export default function MainScreen() {
-  const [checked, setChecked] = React.useState(false)
-  const handlePressCheckbox = React.useCallback(() => {
+  const [data, setData] = useState(initialData)
+  const [editingItemId, setEditingItemId] = useState<string | null>(null)
+  const [checked, setChecked] = useState(false)
+  const [isEditing, setEditing] = useState(false)
+  const [subject, setSubject] = useState('Task Item')
+
+  const handleToggleTaskItem = useCallback(
+    (item: { id: string; subject: string; done: boolean }) => {
+      setData(prevData => {
+        const newData = [...prevData]
+        const index = prevData.indexOf(item)
+        newData[index] = {
+          ...item,
+          done: !item.done
+        }
+
+        return newData
+      })
+    },
+    []
+  )
+  const handleChangeTaskItemSubject = useCallback(
+    (item: { id: string; subject: string; done: boolean }, newSubject: any) => {
+      setData(prevData => {
+        const index = prevData.indexOf(item)
+        const newData = [...prevData]
+        newData[index] = {
+          ...item,
+          subject: newSubject
+        }
+        return newData
+      })
+    },
+    []
+  )
+  const handleFinishEditingTaskItem = useCallback((_item: any) => {
+    setEditingItemId(null)
+  }, [])
+  const handlePressTaskItemLabel = useCallback(
+    (item: { id: string; subject: string; done: boolean }) => {
+      setEditingItemId(item.id)
+    },
+    []
+  )
+  const handleRemoveItem = useCallback(
+    (item: { id: string; subject: string; done: boolean }) => {
+      setData(prevData => {
+        const newData = prevData.filter(i => i !== item)
+        return newData
+      })
+    },
+    []
+  )
+  const handlePressCheckbox = useCallback(() => {
     setChecked(prev => !prev)
   }, [])
   return (
@@ -29,9 +90,15 @@ export default function MainScreen() {
       flex={1}
     >
       <VStack space={5} alignItems="center" w="full">
-        <Box w="200px" h="100px">
-          <TaskItem isDone={checked} onToggleCheckbox={handlePressCheckbox} />
-        </Box>
+        <TaskList
+          data={data}
+          onToggleItem={handleToggleTaskItem}
+          onChangeSubject={handleChangeTaskItemSubject}
+          onFinishEditing={handleFinishEditingTaskItem}
+          onPressLabel={handlePressTaskItemLabel}
+          onRemoveItem={handleRemoveItem}
+          editingItemId={editingItemId}
+        />
         <ThemeToggle />
       </VStack>
     </Center>
