@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useState, useCallback } from 'react'
-import { Box, Center, VStack } from 'native-base'
+import { Box, Center, Fab, Icon, VStack } from 'native-base'
 import ThemeToggle from '../components/theme-toggle'
 import { AntDesign } from '@expo/vector-icons'
 import { Pressable } from 'react-native'
@@ -11,7 +11,7 @@ import TaskList from '../components/task-list'
 const initialData = [
   {
     id: shortid.generate(),
-    subject: 'Learn React Native',
+    subject: 'React Native',
     done: false
   },
   {
@@ -28,9 +28,6 @@ const initialData = [
 export default function MainScreen() {
   const [data, setData] = useState(initialData)
   const [editingItemId, setEditingItemId] = useState<string | null>(null)
-  const [checked, setChecked] = useState(false)
-  const [isEditing, setEditing] = useState(false)
-  const [subject, setSubject] = useState('Task Item')
 
   const handleToggleTaskItem = useCallback(
     (item: { id: string; subject: string; done: boolean }) => {
@@ -79,9 +76,7 @@ export default function MainScreen() {
     },
     []
   )
-  const handlePressCheckbox = useCallback(() => {
-    setChecked(prev => !prev)
-  }, [])
+
   return (
     <Center
       _dark={{ bg: 'blueGray.900' }}
@@ -89,7 +84,7 @@ export default function MainScreen() {
       px={4}
       flex={1}
     >
-      <VStack space={5} alignItems="center" w="full">
+      <VStack space={5} alignItems="center">
         <TaskList
           data={data}
           onToggleItem={handleToggleTaskItem}
@@ -101,6 +96,30 @@ export default function MainScreen() {
         />
         <ThemeToggle />
       </VStack>
+      <Fab
+        position={'absolute'}
+        renderInPortal={false}
+        size={'sm'}
+        icon={
+          <Icon
+            color={'white'}
+            as={<AntDesign name="plus" />}
+            size={'sm'}
+            onPress={() => {
+              const id = shortid.generate()
+              setData([
+                {
+                  id,
+                  subject: '',
+                  done: false
+                },
+                ...data
+              ])
+              setEditingItemId(id)
+            }}
+          />
+        }
+      />
     </Center>
   )
 }
