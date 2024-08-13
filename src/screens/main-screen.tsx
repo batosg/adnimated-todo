@@ -1,12 +1,11 @@
 import * as React from 'react'
 import { useState, useCallback } from 'react'
-import { Box, Center, Fab, Icon, VStack } from 'native-base'
+import { Box, Center, Fab, Icon, useColorModeValue, VStack } from 'native-base'
 import ThemeToggle from '../components/theme-toggle'
 import { AntDesign } from '@expo/vector-icons'
-import { Pressable } from 'react-native'
-import TaskItem from '../components/task-item'
 import shortid from 'shortid'
 import TaskList from '../components/task-list'
+import AnimatedColorBox from '../components/animated-color-box'
 
 const initialData = [
   {
@@ -78,11 +77,10 @@ export default function MainScreen() {
   )
 
   return (
-    <Center
-      _dark={{ bg: 'blueGray.900' }}
-      _light={{ bg: 'blue.50' }}
-      px={4}
+    <AnimatedColorBox
+      bg={useColorModeValue('warmGray.50', 'primary.900')}
       flex={1}
+      w="full"
     >
       <VStack space={5} alignItems="center">
         <TaskList
@@ -120,6 +118,6 @@ export default function MainScreen() {
           />
         }
       />
-    </Center>
+    </AnimatedColorBox>
   )
 }
