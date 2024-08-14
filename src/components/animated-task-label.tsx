@@ -4,10 +4,8 @@ import { Text, HStack, Box } from 'native-base'
 import Animated, {
   Easing,
   useSharedValue,
-  useDerivedValue,
   withSequence,
   withDelay,
-  useAnimatedProps,
   withTiming,
   useAnimatedStyle,
   interpolateColor
