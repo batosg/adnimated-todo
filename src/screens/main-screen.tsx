@@ -1,7 +1,5 @@
-import * as React from 'react'
-import { useState, useCallback } from 'react'
-import { Box, Center, Fab, Icon, useColorModeValue, VStack } from 'native-base'
-import ThemeToggle from '../components/theme-toggle'
+import React, { useCallback, useState } from 'react'
+import { Icon, VStack, useColorModeValue, Fab } from 'native-base'
 import { AntDesign } from '@expo/vector-icons'
 import shortid from 'shortid'
 import TaskList from '../components/task-list'
@@ -21,7 +19,7 @@ const initialData = [
   },
   {
     id: shortid.generate(),
-    subject: 'Learn Redux',
+    subject: 'Learn Python',
     done: false
   }
 ]
@@ -30,15 +28,16 @@ export default function MainScreen() {
   const [editingItemId, setEditingItemId] = useState<string | null>(null)
 
   const handleToggleTaskItem = useCallback(
-    (item: { id: string; subject: string; done: boolean }) => {
+    (item: { done: any; id?: string; subject?: string }) => {
       setData(prevData => {
         const newData = [...prevData]
-        const index = prevData.indexOf(item)
-        newData[index] = {
-          ...item,
-          done: !item.done
+        const index = prevData.findIndex(i => i.id === item.id)
+        if (index !== -1) {
+          newData[index] = {
+            ...item,
+            done: !item.done
+          } as { id: string; subject: string; done: boolean }
         }
-
         return newData
       })
     },
@@ -47,8 +46,8 @@ export default function MainScreen() {
   const handleChangeTaskItemSubject = useCallback(
     (item: { id: string; subject: string; done: boolean }, newSubject: any) => {
       setData(prevData => {
-        const index = prevData.indexOf(item)
         const newData = [...prevData]
+        const index = prevData.indexOf(item)
         newData[index] = {
           ...item,
           subject: newSubject
@@ -62,7 +61,7 @@ export default function MainScreen() {
     setEditingItemId(null)
   }, [])
   const handlePressTaskItemLabel = useCallback(
-    (item: { id: string; subject: string; done: boolean }) => {
+    (item: { id: React.SetStateAction<string | null> }) => {
       setEditingItemId(item.id)
     },
     []
@@ -79,14 +78,22 @@ export default function MainScreen() {
 
   return (
     <AnimatedColorBox
-      bg={useColorModeValue('warmGray.50', 'primary.900')}
       flex={1}
+      bg={useColorModeValue('warmGray.50', 'primary.900')}
       w="full"
     >
       <Masthead title="Hi Batos" image={require('../assets/masthead.jpeg')}>
         <NavBar />
       </Masthead>
-      <VStack space={5} alignItems="center">
+      <VStack
+        flex={1}
+        space={1}
+        bg={useColorModeValue('warmGray.50', 'primary.900')}
+        mt="-20px"
+        borderTopLeftRadius="20px"
+        borderTopRightRadius="20px"
+        pt="20px"
+      >
         <TaskList
           data={data}
           onToggleItem={handleToggleTaskItem}
@@ -96,31 +103,26 @@ export default function MainScreen() {
           onRemoveItem={handleRemoveItem}
           editingItemId={editingItemId}
         />
-        <ThemeToggle />
       </VStack>
       <Fab
-        position={'absolute'}
+        position="absolute"
         renderInPortal={false}
-        size={'sm'}
-        icon={
-          <Icon
-            color={'white'}
-            as={<AntDesign name="plus" />}
-            size={'sm'}
-            onPress={() => {
-              const id = shortid.generate()
-              setData([
-                {
-                  id,
-                  subject: '',
-                  done: false
-                },
-                ...data
-              ])
-              setEditingItemId(id)
-            }}
-          />
-        }
+        size="sm"
+        icon={<Icon color="white" as={<AntDesign name="plus" />} size="sm" />}
+        colorScheme={useColorModeValue('blue', 'darkBlue')}
+        bg={useColorModeValue('blue.500', 'blue.400')}
+        onPress={() => {
+          const id = shortid.generate()
+          setData([
+            {
+              id,
+              subject: '',
+              done: false
+            },
+            ...data
+          ])
+          setEditingItemId(id)
+        }}
       />
     </AnimatedColorBox>
   )

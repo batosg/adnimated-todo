@@ -29,13 +29,13 @@ const SWIPE_THRESHOLD = -SCREEN_WIDTH * 0.2
 const SwipeView = (props: Props) => {
   const { children, backView, onSwipeLeft, simultaneousHandlers } = props
   const translateX = useSharedValue(0)
+
   const panGesture = useAnimatedGestureHandler<PanGestureHandlerGestureEvent>({
     onActive: event => {
       translateX.value = Math.max(-128, Math.min(0, event.translationX))
     },
     onEnd: () => {
       const shouldBeDismissed = translateX.value < SWIPE_THRESHOLD
-
       if (shouldBeDismissed) {
         translateX.value = withTiming(-SCREEN_WIDTH)
         onSwipeLeft && runOnJS(onSwipeLeft)()
@@ -44,6 +44,7 @@ const SwipeView = (props: Props) => {
       }
     }
   })
+
   const facadeStyle = useAnimatedStyle(() => ({
     transform: [
       {
@@ -51,6 +52,7 @@ const SwipeView = (props: Props) => {
       }
     ]
   }))
+
   return (
     <StyledView w="full">
       {backView && (
@@ -67,4 +69,5 @@ const SwipeView = (props: Props) => {
     </StyledView>
   )
 }
+
 export default SwipeView

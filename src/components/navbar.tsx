@@ -9,20 +9,21 @@ const NavBar = () => {
   const handlePressMenuButton = useCallback(() => {
     navigation.openDrawer()
   }, [navigation])
+
   return (
-    <HStack
-      w={'full'}
-      h={40}
-      alignItems={'center'}
-      alignContent={'center'}
-      p={4}
-    >
+    <HStack w="full" h={40} alignItems="center" alignContent="center" p={4}>
       <IconButton
         onPress={handlePressMenuButton}
         borderRadius={100}
-        _icon={{ as: Feather, name: 'menu', size: 6, color: 'white' }}
-      ></IconButton>
+        _icon={{
+          as: Feather,
+          name: 'menu',
+          size: 6,
+          color: 'white'
+        }}
+      />
     </HStack>
   )
 }
+
 export default NavBar

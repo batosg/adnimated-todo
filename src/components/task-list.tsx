@@ -1,9 +1,12 @@
 import React, { useCallback, useRef } from 'react'
-import { makeStyledComponent } from '../utils/styled'
-import { ScrollView } from 'native-base'
-import TaskItem from './task-item'
 import { AnimatePresence, View } from 'moti'
-import { PanGestureHandlerProps } from 'react-native-gesture-handler'
+import {
+  PanGestureHandlerProps,
+  ScrollView
+} from 'react-native-gesture-handler'
+import TaskItem from './task-item'
+import { makeStyledComponent } from '../utils/styled'
+
 const StyledView = makeStyledComponent(View)
 const StyledScrollView = makeStyledComponent(ScrollView)
 
@@ -12,6 +15,7 @@ interface TaskItemData {
   subject: string
   done: boolean
 }
+
 interface TaskListProps {
   data: Array<TaskItemData>
   editingItemId: string | null
@@ -83,9 +87,9 @@ export const AnimatedTaskItem = (props: TaskItemProps) => {
     >
       <TaskItem
         simultaneousHandlers={simultaneousHandlers}
-        isEditing={isEditing}
         subject={data.subject}
         isDone={data.done}
+        isEditing={isEditing}
         onToggleCheckbox={handleToggleCheckbox}
         onChangeSubject={handleChangeSubject}
         onFinishEditing={handleFinishEditing}
@@ -107,6 +111,7 @@ export default function TaskList(props: TaskListProps) {
     onRemoveItem
   } = props
   const refScrollView = useRef(null)
+
   return (
     <StyledScrollView ref={refScrollView} w="full">
       <AnimatePresence>
@@ -114,13 +119,13 @@ export default function TaskList(props: TaskListProps) {
           <AnimatedTaskItem
             key={item.id}
             data={item}
-            isEditing={item.id === editingItemId}
             simultaneousHandlers={refScrollView}
+            isEditing={item.id === editingItemId}
             onToggleItem={onToggleItem}
             onChangeSubject={onChangeSubject}
             onFinishEditing={onFinishEditing}
-            onRemove={onRemoveItem}
             onPressLabel={onPressLabel}
+            onRemove={onRemoveItem}
           />
         ))}
       </AnimatePresence>

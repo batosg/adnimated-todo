@@ -12,7 +12,7 @@ const Masthead = ({ title, image, children }: Props) => {
   return (
     <VStack h="300px" pb={5}>
       <Image
-        position={'absolute'}
+        position="absolute"
         left={0}
         right={0}
         bottom={0}
@@ -24,7 +24,7 @@ const Masthead = ({ title, image, children }: Props) => {
       />
       {children}
       <Box flex={1} />
-      <Heading color={'white'} p={6} size={'xl'}>
+      <Heading color="white" p={6} size="xl">
         {title}
       </Heading>
     </VStack>

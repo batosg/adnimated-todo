@@ -1,18 +1,18 @@
 import React, { useEffect, memo } from 'react'
-import { Pressable } from 'react-native'
-import { Text, HStack, Box } from 'native-base'
+import { Pressable, Text, HStack, Box } from 'native-base'
 import Animated, {
   Easing,
   useSharedValue,
+  useAnimatedStyle,
+  withTiming,
   withSequence,
   withDelay,
-  withTiming,
-  useAnimatedStyle,
   interpolateColor
 } from 'react-native-reanimated'
+
 interface Props {
-  textColor: string
   strikethrough: boolean
+  textColor: string
   inactiveTextColor: string
   onPress?: () => void
   children?: React.ReactNode
@@ -33,7 +33,6 @@ const AnimatedTaskLabel = memo((props: Props) => {
     }),
     [strikethrough]
   )
-
   const textColorProgress = useSharedValue(0)
   const textColorAnimatedStyles = useAnimatedStyle(
     () => ({
@@ -45,7 +44,6 @@ const AnimatedTaskLabel = memo((props: Props) => {
     }),
     [strikethrough, textColor, inactiveTextColor]
   )
-
   const strikethroughWidth = useSharedValue(0)
   const strikethroughAnimatedStyles = useAnimatedStyle(
     () => ({
@@ -58,6 +56,7 @@ const AnimatedTaskLabel = memo((props: Props) => {
     }),
     [strikethrough, textColor, inactiveTextColor]
   )
+
   useEffect(() => {
     const easing = Easing.out(Easing.quad)
     if (strikethrough) {
@@ -65,6 +64,7 @@ const AnimatedTaskLabel = memo((props: Props) => {
         withTiming(4, { duration: 200, easing }),
         withTiming(0, { duration: 200, easing })
       )
+      strikethroughWidth.value = withTiming(1, { duration: 400, easing })
       textColorProgress.value = withDelay(
         1000,
         withTiming(1, { duration: 400, easing })
@@ -97,4 +97,5 @@ const AnimatedTaskLabel = memo((props: Props) => {
     </Pressable>
   )
 })
+
 export default AnimatedTaskLabel
